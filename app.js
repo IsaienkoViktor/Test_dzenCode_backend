@@ -6,8 +6,7 @@ const fs = require("fs/promises");
 
 require("dotenv").config();
 
-const contactsRouter = require("./routes/api/contacts");
-const authRouter = require("./routes/api/auth");
+const commentRouter = require("./routes/api/comment");
 
 const app = express();
 
@@ -25,8 +24,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/auth", authRouter);
-app.use("/api/contacts", contactsRouter);
+app.use("/api/comment", commentRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Not found" });
