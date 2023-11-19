@@ -38,12 +38,18 @@ const commentSchema = new Schema(
         message: (props) => `${props.value} is not a valid URL!`,
       },
     },
+    replies: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "reply",
+      },
+    ],
   },
   { versionKey: false, timestamps: true }
 );
 
 commentSchema.post("save", handleMongooseError);
 
-const Comment = model("Comment", commentSchema);
+const Comment = model("comment", commentSchema);
 
 module.exports = Comment;

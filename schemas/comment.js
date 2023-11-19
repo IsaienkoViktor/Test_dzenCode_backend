@@ -19,17 +19,17 @@ const commentSchema = Joi.object({
 });
 
 const replySchema = Joi.object({
-  reply: Joi.string()
-    .custom((value, helpers) => {
-      const sanitizedText = xss(value, { whiteList: allowedTags });
-      if (sanitizedText === value) {
-        return value;
-      } else {
-        throw HttpError(400, "any.invalid");
-      }
-    })
-    .required(),
-  mainComment: Joi.string(),
+  userName: Joi.string().required().pattern(namePattern),
+  email: Joi.string().required().pattern(emailPattern),
+  homepage: Joi.string().uri(),
+  reply: Joi.string().custom((value, helpers) => {
+    const sanitizedText = xss(value, { whiteList: allowedTags });
+    if (sanitizedText === value) {
+      return value;
+    } else {
+      throw HttpError(400, "any.invalid");
+    }
+  }),
 });
 
 module.exports = { commentSchema, replySchema };

@@ -2,10 +2,20 @@ const { Schema, model } = require("mongoose");
 const xss = require("xss");
 
 const { handleMongooseError } = require("../helpers");
-const { allowedTags } = require("../utils/regexp");
+const { namePattern, emailPattern, allowedTags } = require("../utils/regexp");
 
 const replySchema = new Schema(
   {
+    userName: {
+      type: String,
+      required: [true, "Set user name"],
+      match: namePattern,
+    },
+    email: {
+      type: String,
+      required: [true, "Set email"],
+      match: emailPattern,
+    },
     reply: {
       type: String,
       validate: {
@@ -16,9 +26,21 @@ const replySchema = new Schema(
         message: (props) => `${props.value} contains disallowed HTML tags!`,
       },
     },
-    mainComment: {
+    homepage: {
+      type: String,
+      validate: {
+        validator: function (v) {
+          return /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/.test(v);
+        },
+        message: (props) => `${props.value} is not a valid URL!`,
+      },
+    },
+    mainCommentId: {
       type: Schema.Types.ObjectId,
-      ref: "Comment",
+      ref: "comment",
+    },
+    replyToId: {
+      type: Schema.Types.ObjectId,
     },
   },
   { versionKey: false, timestamps: true }
