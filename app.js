@@ -3,12 +3,27 @@ const logger = require("morgan");
 const cors = require("cors");
 const moment = require("moment");
 const fs = require("fs/promises");
+const session = require("express-session");
 
 require("dotenv").config();
 
+const { SECRET_KEY } = process.env;
+
+const bodyParser = require("body-parser");
+
 const commentRouter = require("./routes/api/comment");
 
+const captchaRouter = require("./routes/api/captcha");
+
 const app = express();
+
+app.use(
+  session({
+    secret: SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
@@ -16,6 +31,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   const { method, url } = req;
@@ -25,6 +41,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/comment", commentRouter);
+app.use("/api/captcha", captchaRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Not found" });
