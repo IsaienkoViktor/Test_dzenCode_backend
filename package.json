@@ -2,6 +2,9 @@
   "name": "test_dZenCode",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">16.x"
+  },
   "scripts": {
     "test": "jest",
     "start": "cross-env NODE_ENV=production node ./server.js",
