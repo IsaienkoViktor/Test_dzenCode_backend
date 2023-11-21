@@ -19,7 +19,7 @@ const getAllComments = async (req, res) => {
 
 const getCommentById = async (req, res) => {
   const { id } = req.params;
-  const comment = await Comment.findById(id);
+  const comment = await Comment.findById(id).populate("replies");
 
   res.status(200).json(comment);
 };
