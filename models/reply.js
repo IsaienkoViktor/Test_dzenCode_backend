@@ -4,6 +4,15 @@ const xss = require("xss");
 const { handleMongooseError } = require("../helpers");
 const { namePattern, emailPattern, allowedTags } = require("../utils/regexp");
 
+const replyToSchema = new Schema({
+  id: {
+    type: Schema.Types.ObjectId,
+  },
+  text: {
+    type: String,
+  },
+});
+
 const replySchema = new Schema(
   {
     userName: {
@@ -39,8 +48,8 @@ const replySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "comment",
     },
-    replyToId: {
-      type: Schema.Types.ObjectId,
+    replyTo: {
+      type: replyToSchema,
     },
   },
   { versionKey: false, timestamps: true }
