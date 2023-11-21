@@ -1,4 +1,4 @@
-const { HttpError, ctrlWrapper } = require("../helpers");
+const { ctrlWrapper } = require("../helpers");
 
 const Comment = require("../models/comment");
 const Reply = require("../models/reply");
@@ -34,7 +34,25 @@ const addReply = async (req, res) => {
   const { id: mainCommentId } = req.params;
   const { replyToId } = req.query;
 
-  const reply = await Reply.create({ ...req.body, mainCommentId, replyToId });
+  const comment = await Comment.findById(replyToId);
+
+  let reply = {};
+
+  if (comment) {
+    reply = await Reply.create({
+      ...req.body,
+      mainCommentId,
+      replyTo: { replyToId, text: comment.text },
+    });
+  } else {
+    const replyComment = await Reply.findById(replyToId);
+
+    reply = await Reply.create({
+      ...req.body,
+      mainCommentId,
+      replyTo: { replyToId, text: replyComment.reply },
+    });
+  }
 
   await Comment.findByIdAndUpdate(
     mainCommentId,
