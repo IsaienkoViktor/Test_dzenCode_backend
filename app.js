@@ -28,7 +28,7 @@ app.use(
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(express.json());
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
