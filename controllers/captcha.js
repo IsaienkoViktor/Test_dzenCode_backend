@@ -21,7 +21,7 @@ const postCaptchaError = (req, res) => {
 
   const storedCaptchaText = req.session.captchaText;
 
-  if (userInput && storedCaptchaText && userInput === storedCaptchaText) {
+  if (userInput === storedCaptchaText) {
     res.send("Captcha is successfully passed!");
   } else {
     res.status(400).send("Wrong captcha try again!");
