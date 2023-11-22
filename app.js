@@ -20,6 +20,12 @@ const captchaRouter = require("./routes/api/captcha");
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+};
+
 app.use(
   session({
     secret: SECRET_KEY,
@@ -31,12 +37,7 @@ app.use(
   })
 );
 app.use(logger(formatsLogger));
-app.use(
-  cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  })
-);
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
