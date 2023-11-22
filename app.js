@@ -18,6 +18,14 @@ const captchaRouter = require("./routes/api/captcha");
 
 const app = express();
 
+const corsOptions = {
+  origin: "http://localhost:5173/",
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
 app.use(
   session({
     secret: SECRET_KEY,
@@ -26,13 +34,19 @@ app.use(
     store: MongoStore.create({
       mongoUrl: DB_HOST,
     }),
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    },
   })
 );
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors({ credentials: true }));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
