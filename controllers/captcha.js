@@ -11,6 +11,7 @@ const getCaptcha = async (req, res) => {
   });
 
   req.session.captchaText = captcha.text;
+
   console.log(req.session);
   console.log(captcha.text);
 
@@ -18,7 +19,7 @@ const getCaptcha = async (req, res) => {
   res.status(200).send(captcha.data);
 };
 
-const postCaptchaError = (req, res) => {
+const postCaptchaStatus = (req, res) => {
   const userInput = req.body.captcha;
   console.log(userInput);
 
@@ -36,5 +37,5 @@ const postCaptchaError = (req, res) => {
 
 module.exports = {
   getCaptcha: ctrlWrapper(getCaptcha),
-  postCaptchaError: ctrlWrapper(postCaptchaError),
+  postCaptchaStatus: ctrlWrapper(postCaptchaStatus),
 };

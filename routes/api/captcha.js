@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get("/", ctrl.getCaptcha);
 
-router.post("/validate", ctrl.postCaptchaError);
+router.post("/validate", ctrl.postCaptchaStatus);
 
 module.exports = router;
