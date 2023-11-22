@@ -50,7 +50,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/comment", commentRouter);
-app.use("/api/captcha", captchaRouter);
+app.use("/api/captcha", bodyParser.json(), captchaRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Not found" });
