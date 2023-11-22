@@ -20,7 +20,9 @@ const postCaptchaError = (req, res) => {
   console.log(userInput);
 
   const storedCaptchaText = req.session.captchaText;
+  console.log(storedCaptchaText);
 
+  console.log(userInput === storedCaptchaText);
   if (userInput === storedCaptchaText) {
     res.send("Captcha is successfully passed!");
   } else {
