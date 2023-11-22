@@ -26,6 +26,12 @@ app.use(
     store: MongoStore.create({
       mongoUrl: DB_HOST,
     }),
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    },
   })
 );
 
