@@ -18,6 +18,13 @@ const captchaRouter = require("./routes/api/captcha");
 
 const app = express();
 
+const corsOptions = {
+  origin: "https://test-d-zen-code-frontend.vercel.app/",
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
+  allowedHeaders: "Content-Type,Authorization",
+};
+
 app.use(
   session({
     secret: SECRET_KEY,
@@ -38,7 +45,7 @@ app.use(
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
