@@ -36,7 +36,7 @@ app.use(
       mongoUrl: DB_HOST,
     }),
     cookie: {
-      secure: false,
+      secure: true,
       maxAge: 3600000,
       httpOnly: true,
     },
