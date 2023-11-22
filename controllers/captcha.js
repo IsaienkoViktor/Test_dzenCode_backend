@@ -11,6 +11,7 @@ const getCaptcha = async (req, res) => {
   });
 
   req.session.captchaText = captcha.text;
+  await req.session.save();
 
   console.log(req.session);
   console.log(captcha.text);
