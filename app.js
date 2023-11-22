@@ -42,6 +42,8 @@ app.use(
     },
   })
 );
+
+app.options("/api/captcha/validate", cors(corsOptions));
 app.use(logger(formatsLogger));
 app.use(cors(corsOptions));
 app.use(express.json());
