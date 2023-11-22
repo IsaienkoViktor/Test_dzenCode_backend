@@ -13,8 +13,9 @@ const getCaptcha = async (req, res) => {
   req.session.captchaText = captcha.text;
   await req.session.save();
 
-  console.log(req.session);
-  console.log(captcha.text);
+  console.log("Session after saving captcha:", req.session);
+  console.log("Captca text:", captcha.text);
+  console.log("Session ID:", req.sessionID);
 
   res.type("svg");
   res.status(200).send(captcha.data);
@@ -25,6 +26,7 @@ const postCaptchaStatus = (req, res) => {
   console.log(userInput);
 
   const storedCaptchaText = req.session.captchaText;
+  console.log("Session ID:", req.sessionID);
   console.log(storedCaptchaText);
   console.log(req.session);
 

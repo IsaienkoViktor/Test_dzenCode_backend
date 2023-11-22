@@ -8,6 +8,8 @@ const MongoStore = require("connect-mongo");
 
 require("dotenv").config();
 
+const app = express();
+
 const { SECRET_KEY, DB_HOST } = process.env;
 
 const bodyParser = require("body-parser");
@@ -16,7 +18,7 @@ const commentRouter = require("./routes/api/comment");
 
 const captchaRouter = require("./routes/api/captcha");
 
-const app = express();
+const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(
   session({
@@ -28,9 +30,6 @@ app.use(
     }),
   })
 );
-
-const formatsLogger = app.get("env") === "development" ? "dev" : "short";
-
 app.use(logger(formatsLogger));
 app.use(
   cors({
