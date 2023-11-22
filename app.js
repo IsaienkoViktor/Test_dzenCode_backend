@@ -19,10 +19,8 @@ const captchaRouter = require("./routes/api/captcha");
 const app = express();
 
 const corsOptions = {
-  origin: "https://test-d-zen-code-frontend.vercel.app/",
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
-  allowedHeaders: "Content-Type,Authorization",
 };
 
 app.use(
