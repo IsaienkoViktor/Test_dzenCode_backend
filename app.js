@@ -22,7 +22,7 @@ app.use(
   session({
     secret: SECRET_KEY,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: DB_HOST,
     }),
