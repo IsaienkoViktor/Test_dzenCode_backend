@@ -24,6 +24,7 @@ const corsOptions = {
   origin: "https://test-d-zen-code-frontend.vercel.app",
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept,Authorization",
 };
 
 app.use(
@@ -34,6 +35,10 @@ app.use(
     store: MongoStore.create({
       mongoUrl: DB_HOST,
     }),
+    cookie: {
+      secure: false,
+      maxAge: 3600000,
+    },
   })
 );
 app.use(logger(formatsLogger));
