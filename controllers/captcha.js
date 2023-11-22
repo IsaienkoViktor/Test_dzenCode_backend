@@ -17,14 +17,11 @@ const getCaptcha = async (req, res) => {
 
 const postCaptchaError = (req, res) => {
   const userInput = req.body.captcha;
+  console.log(userInput);
 
   const storedCaptchaText = req.session.captchaText;
 
-  if (
-    userInput &&
-    storedCaptchaText &&
-    userInput.toLowerCase() === storedCaptchaText.toLowerCase()
-  ) {
+  if (userInput && storedCaptchaText && userInput === storedCaptchaText) {
     res.send("Captcha is successfully passed!");
   } else {
     res.status(400).send("Wrong captcha try again!");
