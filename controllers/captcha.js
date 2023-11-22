@@ -11,6 +11,8 @@ const getCaptcha = async (req, res) => {
   });
 
   req.session.captchaText = captcha.text;
+  console.log(req.session);
+  console.log(captcha.text);
 
   res.type("svg");
   res.status(200).send(captcha.data);
@@ -22,7 +24,7 @@ const postCaptchaError = (req, res) => {
 
   const storedCaptchaText = req.session.captchaText;
   console.log(storedCaptchaText);
-  console.log(req);
+  console.log(req.session);
 
   console.log(userInput === storedCaptchaText);
   if (userInput === storedCaptchaText) {
