@@ -4,10 +4,11 @@ const cors = require("cors");
 const moment = require("moment");
 const fs = require("fs/promises");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 require("dotenv").config();
 
-const { SECRET_KEY } = process.env;
+const { SECRET_KEY, DB_HOST } = process.env;
 
 const bodyParser = require("body-parser");
 
@@ -22,6 +23,9 @@ app.use(
     secret: SECRET_KEY,
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: DB_HOST,
+    }),
   })
 );
 
