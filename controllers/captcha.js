@@ -21,7 +21,7 @@ const getCaptcha = async (req, res) => {
   res.status(200).send(captcha.data);
 };
 
-const postCaptchaStatus = (req, res) => {
+const postCaptchaStatus = async (req, res) => {
   const userInput = req.body.captcha;
   console.log("Captca text user in post request:", userInput);
 
