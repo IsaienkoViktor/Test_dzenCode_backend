@@ -1,5 +1,6 @@
 const svgCaptcha = require("svg-captcha");
 const { ctrlWrapper } = require("../helpers");
+const Session = require("../models/session");
 
 const getCaptcha = async (req, res) => {
   const captcha = svgCaptcha.create({
@@ -10,31 +11,25 @@ const getCaptcha = async (req, res) => {
     background: "#f0f0f0",
   });
 
-  req.session.captchaText = captcha.text;
-  await req.session.save();
+  const session = await Session.create({ captchaText: captcha.text });
 
-  console.log("Session after saving captcha:", req.session);
-  console.log("Captcha text:", captcha.text);
-  console.log("Session ID:", req.sessionID);
-
-  res.type("svg");
-  res.status(200).send(captcha.data);
+  res.status(200).send({ captcha: captcha.data, sessionId: session._id });
 };
 
 const postCaptchaStatus = async (req, res) => {
-  const userInput = req.body.captcha;
-  console.log("Captca text user in post request:", userInput);
+  const { captcha, sessionId } = req.body;
 
-  const storedCaptchaText = req.session.captchaText;
-  console.log("Session ID in post request:", req.sessionID);
-  console.log("Captcha in post request :", storedCaptchaText);
-  console.log("Session in post request:", req.session);
+  const session = await Session.findById(sessionId);
 
-  console.log(userInput === storedCaptchaText);
-  if (userInput === storedCaptchaText) {
-    res.send("Captcha is successfully passed!");
+  if (session) {
+    if (captcha === session.captchaText) {
+      await Session.findByIdAndDelete(sessionId);
+      res.send("Captcha is successfully passed!");
+    } else {
+      res.status(400).send("Wrong captcha try again!");
+    }
   } else {
-    res.status(400).send("Wrong captcha try again!");
+    res.status(400).send("Session is over");
   }
 };
 
