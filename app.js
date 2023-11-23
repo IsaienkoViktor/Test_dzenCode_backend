@@ -21,10 +21,10 @@ const captchaRouter = require("./routes/api/captcha");
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 const corsOptions = {
-  origin: "https://test-d-zen-code-frontend.vercel.app",
+  // origin: "https://test-d-zen-code-frontend.vercel.app",
   credentials: true,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept,Authorization",
+  // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  // allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept,Authorization",
 };
 
 app.use(
@@ -35,15 +35,15 @@ app.use(
     store: MongoStore.create({
       mongoUrl: DB_HOST,
     }),
-    cookie: {
-      secure: true,
-      maxAge: 3600000,
-      httpOnly: true,
-    },
+    // cookie: {
+    //   secure: true,
+    //   maxAge: 3600000,
+    //   httpOnly: true,
+    // },
   })
 );
 
-app.options("/api/captcha/validate", cors(corsOptions));
+// app.options("/api/captcha/validate", cors(corsOptions));
 app.use(logger(formatsLogger));
 app.use(cors(corsOptions));
 app.use(express.json());
