@@ -27,13 +27,7 @@ const replySchema = new Schema(
     },
     reply: {
       type: String,
-      validate: {
-        validator: function (v) {
-          const sanitizedText = xss(v, { whiteList: allowedTags });
-          return sanitizedText === v;
-        },
-        message: (props) => `${props.value} contains disallowed HTML tags!`,
-      },
+      required: true,
     },
     homepage: {
       type: String,
