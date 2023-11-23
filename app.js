@@ -21,10 +21,10 @@ const captchaRouter = require("./routes/api/captcha");
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 const corsOptions = {
-  // origin: "https://test-d-zen-code-frontend.vercel.app",
+  origin: true,
+  methods: ["POST", "GET"],
   credentials: true,
-  // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  // allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept,Authorization",
+  maxAge: 3600,
 };
 
 app.use(
