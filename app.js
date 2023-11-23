@@ -16,27 +16,15 @@ const captchaRouter = require("./routes/api/captcha");
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-// const corsOptions = {
-//   origin: true,
-//   methods: ["POST", "GET"],
-//   credentials: true,
-//   maxAge: 3600,
-// };
+const corsOptions = {
+  origin: true,
+  methods: ["POST", "GET"],
+  credentials: true,
+  maxAge: 3600,
+};
 
-// app.use(
-//   session({
-//     secret: SECRET_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//     store: MongoStore.create({
-//       mongoUrl: DB_HOST,
-//     }),
-//   })
-// );
-
-// app.options("/api/captcha/validate", cors(corsOptions));
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
