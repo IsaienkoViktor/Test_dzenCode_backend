@@ -26,6 +26,7 @@ const postCaptchaStatus = async (req, res) => {
       await Session.findByIdAndDelete(sessionId);
       res.send("Captcha is successfully passed!");
     } else {
+      await Session.findByIdAndDelete(sessionId);
       res.status(400).send("Wrong captcha try again!");
     }
   } else {
