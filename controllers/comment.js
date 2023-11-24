@@ -1,3 +1,5 @@
+const { processImage } = require("../middlewares/index");
+
 const { ctrlWrapper } = require("../helpers");
 
 const Comment = require("../models/comment");
@@ -25,7 +27,45 @@ const getCommentById = async (req, res) => {
 };
 
 const addComment = async (req, res) => {
-  const comment = await Comment.create({ ...req.body });
+  let imageBuffer;
+  let textFileBuffer;
+
+  if (req.files) {
+    if (req.files.image) {
+      imageBuffer = await processImage(req.files.image[0].buffer);
+    }
+
+    if (req.files.textFile) {
+      textFileBuffer = req.files.textFile[0].buffer;
+    }
+  }
+
+  const newCommentData = {
+    userName: req.body.userName,
+    email: req.body.email,
+    text: req.body.text,
+    homepage: req.body.homepage,
+    replies: [],
+  };
+
+  if (imageBuffer) {
+    newCommentData.image = {
+      originalname: req.files.image[0].originalname,
+      mimetype: req.files.image[0].mimetype,
+      size: req.files.image[0].size,
+      buffer: imageBuffer,
+    };
+  }
+
+  if (textFileBuffer) {
+    newCommentData.textFile = {
+      originalname: req.files.textFile[0].originalname,
+      mimetype: req.files.textFile[0].mimetype,
+      size: req.files.textFile[0].size,
+      buffer: textFileBuffer,
+    };
+  }
+  const comment = await Comment.create(newCommentData);
 
   res.status(201).json(comment);
 };
@@ -63,9 +103,26 @@ const addReply = async (req, res) => {
   res.status(201).json(reply);
 };
 
+const addFiles = async (req, res) => {
+  if (req.files.file) {
+    const imageBuffer = req.files.file[0].buffer;
+    await processImage(imageBuffer);
+
+    res.send("Image processed");
+  }
+
+  if (req.files.textFile) {
+    const textFileBuffer = req.files.textFile[0].buffer;
+    const textContent = textFileBuffer.toString();
+
+    res.send(`Text file:\n${textContent}`);
+  }
+};
+
 module.exports = {
   addComment: ctrlWrapper(addComment),
   addReply: ctrlWrapper(addReply),
   getAllComments: ctrlWrapper(getAllComments),
   getCommentById: ctrlWrapper(getCommentById),
+  addFiles: ctrlWrapper(addFiles),
 };
