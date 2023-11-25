@@ -103,26 +103,9 @@ const addReply = async (req, res) => {
   res.status(201).json(reply);
 };
 
-const addFiles = async (req, res) => {
-  if (req.files.file) {
-    const imageBuffer = req.files.file[0].buffer;
-    await processImage(imageBuffer);
-
-    res.send("Image processed");
-  }
-
-  if (req.files.textFile) {
-    const textFileBuffer = req.files.textFile[0].buffer;
-    const textContent = textFileBuffer.toString();
-
-    res.send(`Text file:\n${textContent}`);
-  }
-};
-
 module.exports = {
   addComment: ctrlWrapper(addComment),
   addReply: ctrlWrapper(addReply),
   getAllComments: ctrlWrapper(getAllComments),
   getCommentById: ctrlWrapper(getCommentById),
-  addFiles: ctrlWrapper(addFiles),
 };

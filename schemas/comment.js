@@ -6,6 +6,8 @@ const commentSchema = Joi.object({
   email: Joi.string().required().pattern(emailPattern),
   homepage: Joi.string().uri(),
   text: Joi.string().required(),
+  image: Joi.binary(),
+  textFile: Joi.binary().max(102400),
 });
 
 const replySchema = Joi.object({
@@ -13,6 +15,8 @@ const replySchema = Joi.object({
   email: Joi.string().required().pattern(emailPattern),
   homepage: Joi.string().uri(),
   reply: Joi.string().required(),
+  image: Joi.binary(),
+  textFile: Joi.binary().max(102400),
 });
 
 module.exports = { commentSchema, replySchema };

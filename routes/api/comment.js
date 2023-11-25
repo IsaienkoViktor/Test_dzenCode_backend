@@ -18,19 +18,19 @@ router.post(
   ctrl.addComment
 );
 
-router.post("/reply/:id", isValidId, validateBody(replySchema), ctrl.addReply);
+router.post(
+  "/reply/:id",
+  isValidId,
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "textFile", maxCount: 1 },
+  ]),
+  validateBody(replySchema),
+  ctrl.addReply
+);
 
 router.get("/all", ctrl.getAllComments);
 
 router.get("/:id", isValidId, ctrl.getCommentById);
-
-router.post(
-  "/addfile",
-  upload.fields([
-    { name: "file", maxCount: 1 },
-    { name: "textFile", maxCount: 1 },
-  ]),
-  ctrl.addFiles
-);
 
 module.exports = router;

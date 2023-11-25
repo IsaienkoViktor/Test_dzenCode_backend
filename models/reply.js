@@ -1,8 +1,14 @@
 const { Schema, model } = require("mongoose");
-const xss = require("xss");
 
 const { handleMongooseError } = require("../helpers");
-const { namePattern, emailPattern, allowedTags } = require("../utils/regexp");
+const { namePattern, emailPattern } = require("../utils/regexp");
+
+const fileSchema = new Schema({
+  originalname: String,
+  mimetype: String,
+  size: Number,
+  buffer: Buffer,
+});
 
 const replyToSchema = new Schema({
   id: {
@@ -38,6 +44,8 @@ const replySchema = new Schema(
         message: (props) => `${props.value} is not a valid URL!`,
       },
     },
+    image: fileSchema,
+    textFile: fileSchema,
     mainCommentId: {
       type: Schema.Types.ObjectId,
       ref: "comment",
