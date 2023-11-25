@@ -77,12 +77,40 @@ const addReply = async (req, res) => {
   const comment = await Comment.findById(replyToId);
 
   let reply = {};
+  let imageBuffer;
+  let textFileBuffer;
+
+  if (req.files) {
+    if (req.files.image) {
+      imageBuffer = await processImage(req.files.image[0].buffer);
+    }
+
+    if (req.files.textFile) {
+      textFileBuffer = req.files.textFile[0].buffer;
+    }
+  }
 
   if (comment) {
     reply = await Reply.create({
       ...req.body,
       mainCommentId,
       replyTo: { replyToId, text: comment.text },
+      image: imageBuffer
+        ? {
+            originalname: req.files.image[0].originalname,
+            mimetype: req.files.image[0].mimetype,
+            size: req.files.image[0].size,
+            buffer: imageBuffer,
+          }
+        : undefined,
+      textFile: textFileBuffer
+        ? {
+            originalname: req.files.textFile[0].originalname,
+            mimetype: req.files.textFile[0].mimetype,
+            size: req.files.textFile[0].size,
+            buffer: textFileBuffer,
+          }
+        : undefined,
     });
   } else {
     const replyComment = await Reply.findById(replyToId);
@@ -91,6 +119,22 @@ const addReply = async (req, res) => {
       ...req.body,
       mainCommentId,
       replyTo: { replyToId, text: replyComment.reply },
+      image: imageBuffer
+        ? {
+            originalname: req.files.image[0].originalname,
+            mimetype: req.files.image[0].mimetype,
+            size: req.files.image[0].size,
+            buffer: imageBuffer,
+          }
+        : undefined,
+      textFile: textFileBuffer
+        ? {
+            originalname: req.files.textFile[0].originalname,
+            mimetype: req.files.textFile[0].mimetype,
+            size: req.files.textFile[0].size,
+            buffer: textFileBuffer,
+          }
+        : undefined,
     });
   }
 
