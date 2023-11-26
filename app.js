@@ -3,10 +3,14 @@ const logger = require("morgan");
 const cors = require("cors");
 const moment = require("moment");
 const fs = require("fs/promises");
+const WebSocket = require("ws");
+const http = require("http");
 
 require("dotenv").config();
 
 const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 const bodyParser = require("body-parser");
 
@@ -46,6 +50,18 @@ app.use((_, res) => {
 app.use((err, req, res, next) => {
   const { status = 500, message = "Server Error" } = err;
   res.status(status).json({ message });
+});
+
+wss.on("connection", (ws) => {
+  console.log("WebSocket client is connected");
+
+  ws.on("message", (message) => {
+    console.log(`Received msg: ${message}`);
+  });
+
+  ws.on("close", () => {
+    console.log("WebSocket client was disconnected");
+  });
 });
 
 module.exports = app;
