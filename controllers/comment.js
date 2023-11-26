@@ -148,9 +148,14 @@ const addReply = async (req, res) => {
   res.status(201).json(reply);
 };
 
+const getPing = async (_, res) => {
+  res.status(200).json({ message: "Server is alive" });
+};
+
 module.exports = {
   addComment: ctrlWrapper(addComment),
   addReply: ctrlWrapper(addReply),
   getAllComments: ctrlWrapper(getAllComments),
   getCommentById: ctrlWrapper(getCommentById),
+  getPing: ctrlWrapper(getPing),
 };

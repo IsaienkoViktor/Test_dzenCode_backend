@@ -31,6 +31,8 @@ router.post(
 
 router.get("/all", ctrl.getAllComments);
 
+router.get("/ping", ctrl.getPing);
+
 router.get("/:id", isValidId, ctrl.getCommentById);
 
 module.exports = router;
