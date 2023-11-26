@@ -15,8 +15,9 @@ const getAllComments = async (req, res) => {
   if (createdAt) sortOptions.createdAt = createdAt === "desc" ? -1 : 1;
 
   const data = await Comment.find({}).sort(sortOptions).skip(skip).limit(limit);
+  const total = await Comment.countDocuments();
 
-  res.status(200).json(data);
+  res.status(200).json({ data, total });
 };
 
 const getCommentById = async (req, res) => {
